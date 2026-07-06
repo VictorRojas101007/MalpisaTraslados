@@ -1,7 +1,7 @@
 // pages/Dashboard.jsx
 import { useNavigate } from "react-router-dom";
 import TarjetaAccion from "../components/ui/TarjetaAccion";
-import HistorialTrasladoImg from "../assets/HistorialTrasladoImg.svg";
+import HistorialTrasladoImg from "../assets/historialTrasladoImg.svg";
 import trasladoImg from "../assets/trasladoImg.svg";
 import pendienteImg from "../assets/pendiente.svg";
 import { cerrarSesion } from "../services/usuariosService";
