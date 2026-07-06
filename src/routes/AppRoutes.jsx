@@ -4,7 +4,7 @@ import HistorialTraslados from "../pages/HistorialTraslados";
 import RutaPrivada from "./RutaPrivada";
 import AltaEmpleado from "../pages/AltaEmpleados";
 import Dashboard from "../pages/Dashboard";
-import TrasladoForm from "../components/traslados/trasladoForm";
+import TrasladoForm from "../components/traslados/TrasladoForm";
 import TrasladosPendientes from "../pages/TrasladosPendientes";
 
 function AppRoutes () {
