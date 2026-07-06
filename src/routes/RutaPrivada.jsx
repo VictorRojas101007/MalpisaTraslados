@@ -9,7 +9,7 @@ function RutaPrivada(){
         return <p>... cargando</p>
     }
     if (!usuario) {
-        Navigate("/login")
+         return <Navigate to="/login" replace />; 
     }
     return <Outlet/>
 }
