@@ -8,7 +8,10 @@ export function useTrasladosPendientes(usuario) {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    if (!usuario) return;
+    // Esperar a que el perfil de Firestore ya esté cargado (rol y tiendaId definidos)
+    if (!usuario || (usuario.rol !== "admin" && !usuario.tiendaId)) {
+      return;
+    }
 
     const esAdmin = usuario.rol === "admin";
 
