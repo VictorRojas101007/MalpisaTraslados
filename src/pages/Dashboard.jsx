@@ -11,7 +11,7 @@ import { useAuth } from "../hooks/useAuth";
 function Dashboard() {
     const { usuario } = useAuth();
 
-    const { pendientes } = useTrasladosPendientes(usuario?.tiendaId);
+    const { pendientes } = useTrasladosPendientes(usuario);
   
     const handleLogout = async () => {
     await cerrarSesion();

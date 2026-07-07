@@ -7,6 +7,7 @@ import formatFecha from "../utils/formatFecha";
 import Cargando from "../components/ui/Cargando";
 import { useAuth } from "../hooks/useAuth";
 import { eliminarTraslado } from "../services/trasladosService";
+import { useState } from "react";
 
 function estiloEstado(estado) {
   if (estado === "confirmado") {
@@ -24,10 +25,12 @@ function tituloProductos(productos) {
   return `${productos[0].nombre} +${productos.length - 1} más`;
 }
 
+
 function HistorialTraslados() {
   const { usuario } = useAuth();
   const { traslados, cargando, filtros, setFiltros, error } = useTrasladosFiltrados();
   const grupos = agruparPorFecha(traslados);
+  const [trasladoExpandido, setTrasladoExpandido] = useState(false);
 
   const handleEliminar = async (id) => {
     const confirmar = window.confirm("¿Seguro que querés eliminar este traslado? Esta acción no se puede deshacer.");
@@ -84,6 +87,7 @@ function HistorialTraslados() {
                 <div className="space-y-3">
                   {trasladosDelDia.map((t) => {
                     const { texto, clase } = estiloEstado(t.estado);
+                    const estaExpandido = trasladoExpandido === t.id;
                     return (
                       <div
                         key={t.id}
@@ -103,19 +107,32 @@ function HistorialTraslados() {
                         )}
 
                         <div>
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <p className="text-sm font-bold text-gray-900">{tituloProductos(t.productos)}</p>
-                            <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full ${clase}`}>
-                              {texto}
-                            </span>
-                          </div>
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <button
+                            type="button"
+                            onClick={() => setTrasladoExpandido(estaExpandido ? null : t.id)}
+                            className="text-sm font-bold text-gray-900 hover:underline text-left"
+                          >
+                            {tituloProductos(t.productos)}
+                          </button>
+                          <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full ${clase}`}>
+                            {texto}
+                          </span>
+                        </div>               
+                          {estaExpandido && (
+                            <ul className="text-xs text-blue-700 font-semibold mb-2 space-y-0.5">
+                              {t.productos.map((p, i) => (
+                                <li key={i}>{p.cantidad} UNIDADES DE {p.nombre}</li>
+                              ))}
+                            </ul>
+                          )}
                           <p className="text-sm text-gray-500 mb-2">
                             Trasladado por <span className="font-semibold text-gray-900">{t.creadoPor}</span>
                           </p>
                           <p className="text-sm text-gray-500 mb-2">
                             Confirmado por <span className="font-semibold text-gray-900">{t.confirmadoPor?.nombre || t.confirmadoPor}</span>
                           </p>
-                          <div className="flex items-center gap-4 text-xs text-gray-400">
+                          <div className="flex items-center gap-4 text-xs text-blue-700 font-semibold">
                             <span className="flex items-center gap-1">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <rect x="3" y="5" width="18" height="16" rx="2" />

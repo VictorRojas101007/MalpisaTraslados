@@ -72,7 +72,7 @@ const TrasladoForm = () => {
               className={selectClasses}
             >
               <option value="">Seleccionar origen</option>
-              {Tiendas.map((t) => (
+              {Tiendas.filter((p) => p !== destino).map((t) => (
                 <option key={t} value={t}>{t}</option>
               ))}
             </select>
