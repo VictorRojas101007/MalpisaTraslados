@@ -57,7 +57,6 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
               <path d="m21 21-4.3-4.3" />
             </svg>
             <input
-              required
               type="text"
               placeholder="Nombre del producto"
               value={nombre.toLocaleUpperCase()}
@@ -67,7 +66,6 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
           </div>
 
           <input
-            required
             type="number"
             min={1}
             step={1}
