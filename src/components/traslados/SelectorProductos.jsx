@@ -1,6 +1,19 @@
 // components/traslados/SelectorProductos.jsx
 import { useState } from "react";
 
+const empleados = [
+  "ROBERT SANTANA", 
+  "VICTOR ROJAS", 
+  "LELIS BUSTOS", 
+  "JOSE MALLQUI", 
+  "CAMILO FABABA", 
+  "JOSE", "LUZ PIRGO", 
+  "MARIA CESPEDEZ", 
+  "NATALY SHAPIAMA", 
+  "OLGA MALO", 
+  "SAMANTHA DAVILA"
+]
+
 const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => {
   const [nombre, setNombre] = useState("");
   const [cantidad, setCantidad] = useState("");
@@ -19,14 +32,13 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
     ]);
     setNombre("");
     setCantidad("");
-    // el nombre del responsable ya NO se limpia acá — queda fijo mientras haya productos
   };
 
   const quitarProducto = (index) => {
     const nuevaLista = productos.filter((_, i) => i !== index);
     setProductos(nuevaLista);
     if (nuevaLista.length === 0) {
-      setUsuario(""); // si se vacía la lista completa, se libera el campo de nuevo
+      setUsuario(""); 
     }
   };
 
@@ -78,9 +90,7 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" />
               </svg>
-              <input
-                type="text"
-                placeholder="Nombre completo del responsable"
+              <select
                 value={usuario.toLocaleUpperCase()}
                 onChange={(e) => setUsuario(e.target.value)}
                 disabled={responsableBloqueado}
@@ -89,7 +99,14 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
                     ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                     : "bg-gray-100 text-gray-800"
                 }`}
-              />
+              >
+                <option value="">¿Quien eres?</option>
+                {
+                  empleados.map((e)=>(
+                    <option key={e} value={e}>{e}</option>
+                  ))
+                }
+                </select>
             </div>
           </div>
 
@@ -106,7 +123,7 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
           <div className="flex flex-wrap gap-2 mt-4">
             {productos.map((p, i) => (
               <span key={i} className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide px-3 py-2 rounded-full">
-                {p.cantidad}x {p.nombre}
+                {p.cantidad} UNIDADES DE {p.nombre}
                 <button type="button" onClick={() => quitarProducto(i)} className="text-blue-400 hover:text-blue-700" aria-label={`Quitar ${p.nombre}`}>
                   ×
                 </button>

@@ -48,7 +48,7 @@ function TrasladoPendienteCard({ traslado, usuario }) {
               key={i}
               className="rounded-2xl bg-gray-50 px-4 py-3 flex items-center justify-between"
             >
-              <span>{p.cantidad} x {p.nombre}</span>
+              <span>{p.cantidad} UNIDADES DE {p.nombre}</span>
             </li>
           ))}
         </ul>
