@@ -14,7 +14,7 @@ function Login() {
   useEffect(() => {
     console.log(usuario);
     if (usuario) {
-      navigate("/traslado");
+      navigate("/");
     }
   }, [usuario, navigate]);
 
