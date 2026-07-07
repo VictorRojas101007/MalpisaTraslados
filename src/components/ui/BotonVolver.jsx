@@ -6,7 +6,7 @@ function BotonVolver() {
   return (
     <button
       type="button"
-      onClick={() => navigate("/")}
+      onClick={() => navigate("/dashboard")}
       className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors text-gray-600"
       aria-label="Volver al inicio"
     >

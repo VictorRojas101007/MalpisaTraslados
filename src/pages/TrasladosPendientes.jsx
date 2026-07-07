@@ -1,4 +1,5 @@
 import BotonVolver from "../components/ui/BotonVolver";
+import Cargando from "../components/ui/Cargando";
 import SinTrasladosPendientes from "../components/ui/SinTrasladosPendientes";
 import TrasladoPendienteCard from "../components/ui/TrasladoPendienteCard";
 import { useAuth } from "../hooks/useAuth";
@@ -6,9 +7,9 @@ import { useTrasladosPendientes } from "../hooks/useTrasladosPendientes";
 
 function TrasladosPendientes() {
   const { usuario } = useAuth();
-  const { pendientes, cargando } = useTrasladosPendientes(usuario?.tiendaId);
+  const { pendientes, cargando } = useTrasladosPendientes(usuario);;
 
-  if (cargando) return <p>...Cargando</p>;
+  if (cargando) return <Cargando mensaje="Cargando traslados pendientes..."/>;
   if (pendientes.length === 0) return <SinTrasladosPendientes />;
 
   return (
@@ -47,7 +48,7 @@ function TrasladosPendientes() {
 
       <div className="space-y-4">
         {pendientes.map((t) => (
-          <TrasladoPendienteCard key={t.id} traslado={t} usuario={usuario} />
+          <TrasladoPendienteCard key={t.id} traslado={t} usuario={usuario.nombre} />
         ))}
       </div>
     </div>

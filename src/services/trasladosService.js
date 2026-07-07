@@ -22,7 +22,11 @@ export const crearTraslado = async ({origen, productos, destino, creadoPor }) =>
 
 
 export const escucharTrasladosFiltrados = (filtros, callback, onError) => {
-  const condiciones = [orderBy("fechaEnvio", "desc")];
+  const condiciones = [
+    where("estado", "==", "confirmado"),   
+    orderBy("fechaEnvio", "asc"),
+  ];
+
 
   if (filtros.fechaDesde) {
     condiciones.push(where("fechaEnvio", ">=", Timestamp.fromDate(filtros.fechaDesde)));

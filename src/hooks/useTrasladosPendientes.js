@@ -1,24 +1,29 @@
-import { and, collection, onSnapshot, or, query, where } from "firebase/firestore";
+// hooks/useTrasladosPendientes.js
 import { useEffect, useState } from "react";
 import { db } from "../config/firebase";
+import { collection, query, where, and, or, onSnapshot } from "firebase/firestore";
 
-export function useTrasladosPendientes(tiendaId) {
+export function useTrasladosPendientes(usuario) {
   const [pendientes, setPendientes] = useState([]);
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    if (!tiendaId) return;
+    if (!usuario) return;
 
-    const q = query(
-      collection(db, "traslados"),
-      and(
-      where("estado", "==", "pendiente"),
-      or(
-        where("origen", "==", tiendaId),
-        where("destino", "==", tiendaId)
-      )
-    )
-    );
+    const esAdmin = usuario.rol === "admin";
+
+    const q = esAdmin
+      ? query(collection(db, "traslados"), where("estado", "==", "pendiente"))
+      : query(
+          collection(db, "traslados"),
+          and(
+            where("estado", "==", "pendiente"),
+            or(
+              where("origen", "==", usuario.tiendaId),
+              where("destino", "==", usuario.tiendaId)
+            )
+          )
+        );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setPendientes(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
@@ -26,7 +31,7 @@ export function useTrasladosPendientes(tiendaId) {
     });
 
     return () => unsubscribe();
-  }, [tiendaId]);
+  }, [usuario]);
 
   return { pendientes, cargando };
 }

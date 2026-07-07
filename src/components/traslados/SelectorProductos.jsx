@@ -7,7 +7,7 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
 
   const agregarProducto = () => {
     if (!nombre.trim() || !cantidad) return;
-    setProductos([...productos, { nombre: nombre.trim(), cantidad: Number(cantidad), usuario: usuario.trim() }]);
+    setProductos([...productos, { nombre: nombre.trim().toLocaleUpperCase(), cantidad: Number(cantidad), usuario: usuario.trim().toLocaleUpperCase() }]);
     setNombre("");
     setCantidad("");
     setUsuario("");
@@ -45,6 +45,8 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
           <div className="flex gap-3">
             <input
               type="number"
+              min={1}
+              step={1}
               placeholder="Cant."
               value={cantidad}
               onChange={(e) => setCantidad(e.target.value)}
@@ -97,7 +99,7 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
           <input
             type="text"
             placeholder="Nombre completo del responsable"
-            value={usuario}
+            value={usuario.toLocaleUpperCase()}
             onChange={(e) => setUsuario(e.target.value)}
             className="w-full bg-gray-100 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-800 border-0 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />

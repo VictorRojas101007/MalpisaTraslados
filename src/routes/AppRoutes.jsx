@@ -25,11 +25,11 @@ function AppRoutes () {
                 />
                 <Route 
                     path="/"
-                    element={<Dashboard/>}
+                    element={<TrasladoForm/>}
                 />
                 <Route 
-                    path="/traslado"
-                    element={<TrasladoForm/>}
+                    path="/dashboard"
+                    element={<Dashboard/>}
                 />
                 <Route 
                     path="/traslados-pendientes"

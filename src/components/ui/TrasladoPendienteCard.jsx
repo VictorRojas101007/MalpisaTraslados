@@ -1,4 +1,5 @@
 import { confirmarTraslado } from "../../services/trasladosService";
+import formatFecha from "../../utils/formatFecha";
 
 function TrasladoPendienteCard({ traslado, usuario }) {
   return (
@@ -6,20 +7,15 @@ function TrasladoPendienteCard({ traslado, usuario }) {
       <div className="flex-1">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-3">
-            {traslado.sku && (
-              <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.24em] text-blue-700">
-                SKU: {traslado.sku}
-              </span>
-            )}
             <div>
               <h2 className="text-xl font-bold text-gray-900">
                 {traslado.productos[0]?.nombre}
               </h2>
-              <p className="text-sm text-gray-500">
-                {traslado.productos[0]?.cantidad} x {traslado.productos[0]?.nombre}
-              </p>
                 <p className="text-sm text-gray-500">
                   Trasladado por <span className="font-semibold text-gray-900">{traslado.creadoPor}</span>
+                </p>
+                <p className="text-sm text-gray-500">
+                  Fecha <span className="font-semibold text-gray-900">{formatFecha(traslado.fechaEnvio)}</span>
                 </p>
             </div>
           </div>
@@ -58,13 +54,13 @@ function TrasladoPendienteCard({ traslado, usuario }) {
         </ul>
       </div>
 
-      <button
-        type="submit"
-        onClick={() => confirmarTraslado(traslado.id, usuario)}
-        className="w-full rounded-3xl bg-blue-600 px-6 py-4 text-sm font-bold text-white transition hover:bg-blue-700 sm:w-auto"
-      >
-        Confirmar Recepción
-      </button>
+    <button
+      type="submit"
+      onClick={() => confirmarTraslado(traslado.id, usuario)}
+      className="w-full rounded-3xl bg-blue-600 px-6 py-4 text-sm font-bold text-white transition hover:bg-blue-700 sm:w-auto animate-[float-button_2.5s_ease-in-out_infinite]"
+    >
+      Confirmar Recepción
+    </button>
     </article>
   );
 }

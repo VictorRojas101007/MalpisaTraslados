@@ -3,6 +3,10 @@ import { useTrasladosFiltrados } from "../hooks/useTrasladosFiltrados";
 import { agruparPorFecha } from "../utils/agruparPorFecha";
 import FiltrosHistorial from "../components/traslados/FiltrosHistorial";
 import BotonVolver from "../components/ui/BotonVolver";
+import formatFecha from "../utils/formatFecha";
+import Cargando from "../components/ui/Cargando";
+import { useAuth } from "../hooks/useAuth";
+import { eliminarTraslado } from "../services/trasladosService";
 
 function estiloEstado(estado) {
   if (estado === "confirmado") {
@@ -21,8 +25,21 @@ function tituloProductos(productos) {
 }
 
 function HistorialTraslados() {
+  const { usuario } = useAuth();
   const { traslados, cargando, filtros, setFiltros, error } = useTrasladosFiltrados();
   const grupos = agruparPorFecha(traslados);
+
+  const handleEliminar = async (id) => {
+    const confirmar = window.confirm("¿Seguro que querés eliminar este traslado? Esta acción no se puede deshacer.");
+    if (!confirmar) return;
+
+    try {
+      await eliminarTraslado(id);
+    } catch (error) {
+      console.error("Error al eliminar traslado:", error);
+      alert("No se pudo eliminar el traslado");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-8 lg:px-12">
@@ -55,7 +72,7 @@ function HistorialTraslados() {
               </p>
             )}
 
-            {cargando && <p className="text-sm text-gray-400">Cargando...</p>}
+            {cargando && <Cargando mensaje="Buscando traslados..." />}
 
             {!cargando && !error && traslados.length === 0 && (
               <p className="text-sm text-gray-400">No hay traslados en este rango.</p>
@@ -70,8 +87,21 @@ function HistorialTraslados() {
                     return (
                       <div
                         key={t.id}
-                        className="bg-white rounded-2xl shadow-sm p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                        className="relative bg-white rounded-2xl shadow-sm p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
                       >
+                        {usuario?.rol === "admin" && (
+                          <button
+                            type="button"
+                            onClick={() => handleEliminar(t.id)}
+                            aria-label="Eliminar traslado"
+                            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z" />
+                            </svg>
+                          </button>
+                        )}
+
                         <div>
                           <div className="flex items-center gap-2 mb-1 flex-wrap">
                             <p className="text-sm font-bold text-gray-900">{tituloProductos(t.productos)}</p>
@@ -79,16 +109,19 @@ function HistorialTraslados() {
                               {texto}
                             </span>
                           </div>
-                            <p className="text-sm text-gray-500 mb-2">
-                          Trasladado por <span className="font-semibold text-gray-900">{t.creadoPor}</span>
-                            </p>
+                          <p className="text-sm text-gray-500 mb-2">
+                            Trasladado por <span className="font-semibold text-gray-900">{t.creadoPor}</span>
+                          </p>
+                          <p className="text-sm text-gray-500 mb-2">
+                            Confirmado por <span className="font-semibold text-gray-900">{t.confirmadoPor?.nombre || t.confirmadoPor}</span>
+                          </p>
                           <div className="flex items-center gap-4 text-xs text-gray-400">
                             <span className="flex items-center gap-1">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <rect x="3" y="5" width="18" height="16" rx="2" />
                                 <path d="M8 3v4M16 3v4M3 10h18" />
                               </svg>
-                              {t.fechaEnvio?.toDate().toLocaleDateString("es-PE")}
+                              {formatFecha(t.fechaEnvio)}
                             </span>
                             <span className="flex items-center gap-1">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

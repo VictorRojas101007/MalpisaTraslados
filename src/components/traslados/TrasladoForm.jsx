@@ -3,6 +3,7 @@ import SelectorProductos from "./SelectorProductos";
 import { useState } from "react";
 import { crearTraslado } from "../../services/trasladosService";
 import BotonVolver from "../ui/BotonVolver";
+import { useNavigate } from "react-router-dom";
 
 const Tiendas = ["Tienda Malpisa", "Tienda Color Centro", "Almacen Prisma"];
 
@@ -15,13 +16,14 @@ const TrasladoForm = () => {
   const [destino, setDestino] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [usuario, setUsuario] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (productos.length === 0 || !destino) return;
     setEnviando(true);
     try {
-      const creador = usuario || productos[0]?.usuario || "";
+      const creador = (usuario || productos[0]?.usuario || "").toLocaleUpperCase();
       await crearTraslado({
         productos,
         origen,
@@ -30,6 +32,7 @@ const TrasladoForm = () => {
       });
       setProductos([]);
       setDestino("");
+      return navigate("/traslados-pendientes")
     } catch (error) {
       console.error("Hubo un error al hacer el traslado", error);
     } finally {
@@ -111,7 +114,7 @@ const TrasladoForm = () => {
               disabled={enviando}
               className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-bold px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
             >
-              {enviando ? "Enviando..." : "Confirmar traslado"}
+              {enviando ? "Enviando..." : "Enviar traslado"}
               {!enviando && <span aria-hidden="true">→</span>}
             </button>
           </div>

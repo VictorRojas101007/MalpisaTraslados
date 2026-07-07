@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { registrarUsuario } from "../services/usuariosService";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import Cargando from "../components/ui/Cargando";
 
 function AltaEmpleado() {
   const [form, setForm] = useState({
@@ -62,7 +63,7 @@ function AltaEmpleado() {
     }
   };
 
-  if (authCargando) return <p>...cargando</p>;
+  if (authCargando) return <Cargando/>;
   if (!usuario || usuario.rol !== "admin") return null;
 
   return (

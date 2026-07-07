@@ -40,7 +40,7 @@ function Dashboard() {
             titulo="Traslado"
             descripcion="Inicia una nueva transferencia de productos entre almacenes de forma inmediata."
             textoBoton="Comenzar traslado"
-            onClick={() => navigate("/traslado")}
+            onClick={() => navigate("/")}
             destacada
           />
 
