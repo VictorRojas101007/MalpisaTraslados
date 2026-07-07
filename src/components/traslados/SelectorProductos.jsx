@@ -2,17 +2,17 @@
 import { useState } from "react";
 
 const empleados = [
-  "ROBERT SANTANA", 
-  "VICTOR ROJAS", 
-  "LELIS BUSTOS", 
-  "JOSE MALLQUI", 
-  "CAMILO FABABA", 
-  "JOSE", "LUZ PIRGO", 
-  "MARIA CESPEDEZ", 
-  "NATALY SHAPIAMA", 
-  "OLGA MALO", 
+  "ROBERT SANTANA",
+  "VICTOR ROJAS",
+  "LELIS BUSTOS",
+  "JOSE MALLQUI",
+  "CAMILO FABABA",
+  "JOSE", "LUZ PIRGO",
+  "MARIA CESPEDEZ",
+  "NATALY SHAPIAMA",
+  "OLGA MALO",
   "SAMANTHA DAVILA"
-]
+];
 
 const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => {
   const [nombre, setNombre] = useState("");
@@ -38,7 +38,7 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
     const nuevaLista = productos.filter((_, i) => i !== index);
     setProductos(nuevaLista);
     if (nuevaLista.length === 0) {
-      setUsuario(""); 
+      setUsuario("");
     }
   };
 
@@ -57,6 +57,7 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
               <path d="m21 21-4.3-4.3" />
             </svg>
             <input
+              required
               type="text"
               placeholder="Nombre del producto"
               value={nombre.toLocaleUpperCase()}
@@ -66,6 +67,7 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
           </div>
 
           <input
+            required
             type="number"
             min={1}
             step={1}
@@ -86,27 +88,33 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
             </label>
             <div className="relative">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10">
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" />
               </svg>
+
               <select
                 value={usuario.toLocaleUpperCase()}
                 onChange={(e) => setUsuario(e.target.value)}
                 disabled={responsableBloqueado}
-                className={`w-full rounded-xl pl-11 pr-4 py-3 text-sm border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full appearance-none rounded-xl pl-11 pr-10 py-3 text-sm border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   responsableBloqueado
                     ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                     : "bg-gray-100 text-gray-800"
                 }`}
               >
-                <option value="">¿Quien eres?</option>
-                {
-                  empleados.map((e)=>(
-                    <option key={e} value={e}>{e}</option>
-                  ))
-                }
-                </select>
+                <option value="">¿Quién eres?</option>
+                {empleados.map((e) => (
+                  <option key={e} value={e}>{e}</option>
+                ))}
+              </select>
+
+              {!responsableBloqueado && (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              )}
             </div>
           </div>
 
