@@ -4,12 +4,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB2DGVHKSK2IynymUz97VMcT-bnfaSwbfc",
-  authDomain: "tienda-traslados.firebaseapp.com",
-  projectId: "tienda-traslados",
-  storageBucket: "tienda-traslados.firebasestorage.app",
-  messagingSenderId: "264982458787",
-  appId: "1:264982458787:web:a2240d5bc36fbf0759aa16"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);

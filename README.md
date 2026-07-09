@@ -1,18 +1,88 @@
-# React + Vite
+# MalpisaTraslados
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para gestionar traslados de productos entre sucursales. Permite iniciar movimientos, confirmar recepciones, consultar historial y administrar accesos de empleados según el rol del usuario.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Inicio de sesión con Firebase Authentication.
+- Creación de traslados entre sucursales.
+- Confirmación de traslados pendientes por tienda.
+- Historial de traslados confirmados con filtros por fecha, origen y destino.
+- Alta de empleados desde una vista restringida para administradores.
+- Persistencia en Firestore en tiempo real.
 
-## React Compiler
+## Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- React 19
+- Vite 8
+- React Router DOM 7
+- Firebase Auth
+- Cloud Firestore
+- Tailwind CSS 4
+- ESLint
 
-Note: This will impact Vite dev & build performances.
+## Estructura principal
 
-## Expanding the ESLint configuration
+- `src/pages`: pantallas principales como login, dashboard, historial, pendientes y alta de empleados.
+- `src/components`: componentes de layout, formularios, tarjetas y UI reutilizable.
+- `src/services`: acceso a Firebase para usuarios y traslados.
+- `src/hooks`: lógica de consulta y estado derivado.
+- `src/context`: contexto global de autenticación.
+- `src/utils`: formateo de fechas y agrupación de resultados.
+- `src/config/firebase.js`: inicialización de Firebase.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Flujo del sistema
+
+1. El usuario inicia sesión.
+2. El sistema carga su perfil desde la colección `usuarios`.
+3. Se puede registrar un nuevo traslado indicando origen, destino y productos.
+4. La sucursal destino visualiza los traslados pendientes.
+5. Al confirmar la recepción, el traslado pasa a estado `confirmado`.
+6. Los traslados confirmados aparecen en el historial filtrable.
+
+## Instalación
+
+```bash
+npm install
+npm run dev
+```
+
+La app se ejecuta por defecto en `http://localhost:5173`.
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
+```
+
+## Firebase
+
+Actualmente la configuración de Firebase está definida en `src/config/firebase.js`.
+
+Colecciones utilizadas:
+
+- `usuarios`: perfil del empleado, tienda asignada y rol.
+- `traslados`: movimientos entre sucursales, estado, fechas y usuarios involucrados.
+
+## Rutas principales
+
+- `/login`: acceso al sistema.
+- `/`: creación de nuevo traslado.
+- `/dashboard`: panel principal.
+- `/traslados-pendientes`: confirmación de recepciones.
+- `/historial-traslados`: consulta histórica.
+- `/register`: alta de empleados.
+
+## Roles
+
+- `admin`: puede dar de alta empleados y eliminar traslados desde el historial.
+- `empleado`: puede operar traslados según su sucursal asignada.
+
+## Notas
+
+- El historial consulta traslados confirmados y puede requerir índices en Firestore según los filtros usados.
+- El proyecto usa datos en tiempo real mediante `onSnapshot`.
+- Si se quiere mejorar la seguridad, conviene mover las credenciales de Firebase a variables de entorno.
