@@ -4,29 +4,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey:
-
-"AIzaSyB2DGVHKSK2IynymUz97VMcT-bnfaSwbfc",
-
-authDomain:
-
-"tienda-traslados.firebaseapp.com",
-
+  apiKey:"AIzaSyB2DGVHKSK2IynymUz97VMcT-bnfaSwbfc",
+  authDomain:"tienda-traslados.firebaseapp.com",
 projectId: "tienda-traslados",
-
-storageBucket:
-
-"tienda-traslados.firebasestorage.app",
-
+  storageBucket:"tienda-traslados.firebasestorage.app",
 messagingSenderId: "264982458787",
-
-
-"1:264982458787:web:a2240d5bc36f
-
-
-appId:
-
-bf0759aa16"
+  appId:"1:264982458787:web:a2240d5bc36fbf0759aa16"
 };
 
 const app = initializeApp(firebaseConfig);
