@@ -1,7 +1,20 @@
-import { confirmarTraslado } from "../../services/trasladosService";
+import { confirmarTraslado, eliminarTraslado } from "../../services/trasladosService";
 import formatFecha from "../../utils/formatFecha";
 
 function TrasladoPendienteCard({ traslado, usuario }) {
+
+  const handleEliminar = async (id) => {
+    const confirmar = window.confirm("Estas seguro de eliminar este traslado?");
+    if (!confirmar) return;
+
+    try {
+      await eliminarTraslado(id);
+    } catch (error){
+      console.error("Error al eliminar traslado:", error);
+      alert("No se pudo eliminar el traslado");
+    }
+  };
+
   return (
     <article className="bg-white rounded-[28px] shadow-sm p-6 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex-1">
@@ -60,6 +73,13 @@ function TrasladoPendienteCard({ traslado, usuario }) {
       className="w-full rounded-3xl bg-blue-600 px-6 py-4 text-sm font-bold text-white transition hover:bg-blue-700 sm:w-auto animate-[float-button_2.5s_ease-in-out_infinite]"
     >
       Confirmar Recepción
+    </button>
+    <button
+      type="submit"
+      onClick={() => handleEliminar(traslado.id)}
+      className="w-full rounded-3xl bg-gray-600 px-6 py-4 text-sm font-bold text-white transition hover:bg-gray-700 sm:w-auto animate-[float-button_2.5s_ease-in-out_infinite]"
+    >
+      Eliminar Traslado
     </button>
     </article>
   );

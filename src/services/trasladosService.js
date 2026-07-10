@@ -72,7 +72,6 @@ export const confirmarTraslado = async (trasladoId, usuario)=>{
 
   const ref = doc(db, "traslados", trasladoId)
   await updateDoc( ref, {
-
     estado:"confirmado",
     confirmadoPor:usuario,
     fechaConfirmacion: serverTimestamp(),
