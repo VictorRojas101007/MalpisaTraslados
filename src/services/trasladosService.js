@@ -77,3 +77,8 @@ export const confirmarTraslado = async (trasladoId, usuario)=>{
     fechaConfirmacion: serverTimestamp(),
   });
 };
+
+export const editarProductosTrasladados = async (trasladoId, cambios) => {
+  const ref = doc(db, "traslados", trasladoId)
+  await updateDoc( ref, cambios);
+}

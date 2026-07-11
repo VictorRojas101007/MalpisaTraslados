@@ -129,7 +129,7 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
           <div className="flex flex-wrap gap-2 mt-4">
             {productos.map((p, i) => (
               <span key={i} className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide px-3 py-2 rounded-full">
-                {p.cantidad} UNIDADES DE {p.nombre}
+                {p.cantidad} UNIDAD(ES) DE {p.nombre}
                 <button type="button" onClick={() => quitarProducto(i)} className="text-blue-400 hover:text-blue-700" aria-label={`Quitar ${p.nombre}`}>
                   ×
                 </button>
