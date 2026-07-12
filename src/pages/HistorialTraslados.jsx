@@ -6,7 +6,7 @@ import BotonVolver from "../components/ui/BotonVolver";
 import formatFecha from "../utils/formatFecha";
 import Cargando from "../components/ui/Cargando";
 import { useAuth } from "../hooks/useAuth";
-import { eliminarTraslado } from "../services/trasladosService";
+import { editarProductosTrasladados, eliminarTraslado } from "../services/trasladosService";
 import { useState } from "react";
 
 function estiloEstado(estado) {
@@ -27,10 +27,14 @@ function tituloProductos(productos) {
 
 
 function HistorialTraslados() {
+
+  
   const { usuario } = useAuth();
   const { traslados, cargando, filtros, setFiltros, error } = useTrasladosFiltrados();
   const grupos = agruparPorFecha(traslados);
-  const [trasladoExpandido, setTrasladoExpandido] = useState(false);
+  const [trasladoExpandido, setTrasladoExpandido] = useState(null);
+  const [indiceEditando, setIndiceEditando] = useState(null);
+  const [productoEditado, setProductoEditado] = useState({ nombre: "", cantidad: "" });
 
   const handleEliminar = async (id) => {
     const confirmar = window.confirm("¿Seguro que querés eliminar este traslado? Esta acción no se puede deshacer.");
@@ -41,6 +45,44 @@ function HistorialTraslados() {
     } catch (error) {
       console.error("Error al eliminar traslado:", error);
       alert("No se pudo eliminar el traslado");
+    }
+  };
+
+  const iniciarEdicion = (producto, index) => {
+    setIndiceEditando(index);
+    setProductoEditado({
+      nombre: producto.nombre || "",
+      cantidad: producto.cantidad || "",
+    });
+  };
+
+  const cancelarEdicion = () => {
+    setIndiceEditando(null);
+    setProductoEditado({ nombre: "", cantidad: "" });
+  };
+
+  const handleChangeProduct = (campo, valor) => {
+    setProductoEditado((prev) => ({ ...prev, [campo]: valor }));
+  };
+
+  const guardarEdicion = async (traslado) => {
+    try {
+      const productosActualizados = traslado.productos.map((producto, index) =>
+        index === indiceEditando
+          ? {
+              ...producto,
+              nombre: productoEditado.nombre.trim().toUpperCase(),
+              cantidad: Number(productoEditado.cantidad),
+            }
+          : producto
+      );
+
+      await editarProductosTrasladados(traslado.id, { productos: productosActualizados });
+      alert("Producto actualizado");
+      cancelarEdicion();
+    } catch (error) {
+      console.error("Error al actualizar producto:", error);
+      alert("No se pudo actualizar el producto");
     }
   };
 
@@ -120,10 +162,41 @@ function HistorialTraslados() {
                           </span>
                         </div>               
                           {estaExpandido && (
-                            <ul className="text-xs text-blue-700 font-semibold mb-2 space-y-0.5">
+                            <ul className="text-xs text-blue-700 font-semibold mb-2 space-y-2">
                               {t.productos.map((p, i) => (
-                                <li key={i}>{p.cantidad} UNIDADES DE {p.nombre}</li>
-                                
+                                <li key={i} className="rounded-xl bg-blue-50 px-3 py-2">
+                                  {(indiceEditando === i && usuario?.rol === "admin") ? (
+                                    <div className="space-y-2">
+                                      <input
+                                        type="text"
+                                        value={productoEditado.nombre}
+                                        onChange={(e) => handleChangeProduct("nombre", e.target.value.toUpperCase())}
+                                        placeholder="Nombre del producto"
+                                        className="w-full rounded-lg bg-white px-3 py-2 text-sm text-gray-800"
+                                      />
+                                      <input
+                                        type="number"
+                                        min="1"
+                                        value={productoEditado.cantidad}
+                                        onChange={(e) => handleChangeProduct("cantidad", e.target.value)}
+                                        placeholder="Cantidad"
+                                        className="w-full rounded-lg bg-white px-3 py-2 text-sm text-gray-800"
+                                      />
+                                      <div className="flex gap-2">
+                                        <button type="button" onClick={() => guardarEdicion(t)} className="rounded-lg bg-blue-600 px-3 py-2 text-white">Guardar</button>
+                                        <button type="button" onClick={cancelarEdicion} className="rounded-lg bg-gray-300 px-3 py-2 text-gray-800">Cancelar</button>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    
+                                    <div className="flex items-center justify-between gap-3">
+                                      <span>{p.cantidad} UNIDADES DE {p.nombre}</span>
+                                      {estaExpandido && usuario?.rol === "admin" && (
+                                        <button type="button" onClick={() => iniciarEdicion(p, i)} className="rounded-lg bg-gray-900 px-3 py-2 text-white">Editar</button>
+                                      )}
+                                    </div>
+                                  )}
+                                </li>
                               ))}
                             </ul>
                           )}
