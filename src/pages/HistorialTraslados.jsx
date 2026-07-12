@@ -123,6 +123,7 @@ function HistorialTraslados() {
                             <ul className="text-xs text-blue-700 font-semibold mb-2 space-y-0.5">
                               {t.productos.map((p, i) => (
                                 <li key={i}>{p.cantidad} UNIDADES DE {p.nombre}</li>
+                                
                               ))}
                             </ul>
                           )}

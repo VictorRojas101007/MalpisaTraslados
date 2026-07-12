@@ -15,23 +15,36 @@ const empleados = [
 ];
 
 const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => {
-  const [nombre, setNombre] = useState("");
-  const [cantidad, setCantidad] = useState("");
+  const [nombre, setNombre] = useState(()=>localStorage.getItem("nombre") || "");
+  const [cantidad, setCantidad] = useState(()=>localStorage.getItem("cantidad") || "");
+
 
   const responsableBloqueado = productos.length > 0;
+
+  const handleInputNombre = (e) => {
+    const value = e.target.value.toLocaleUpperCase();
+    setNombre(value);
+    localStorage.setItem("nombre", value);
+  };
+  const handleInputCantidad = (e) => {
+    const value = e.target.value;
+    setCantidad(value);
+    localStorage.setItem("cantidad", value);
+  };
 
   const agregarProducto = () => {
     if (!nombre.trim() || !cantidad || !usuario.trim()) return;
     setProductos([
       ...productos,
       {
-        nombre: nombre.trim().toLocaleUpperCase(),
+        nombre: nombre || "",
         cantidad: Number(cantidad),
         usuario: usuario.trim().toLocaleUpperCase(),
       },
     ]);
     setNombre("");
     setCantidad("");
+    console.log("se hizo clicl",productos);
   };
 
   const quitarProducto = (index) => {
@@ -59,8 +72,8 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
             <input
               type="text"
               placeholder="Nombre del producto"
-              value={nombre.toLocaleUpperCase()}
-              onChange={(e) => setNombre(e.target.value)}
+              value={nombre || ""}
+              onChange={handleInputNombre}
               className="w-full bg-gray-100 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-800 border-0 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -70,8 +83,8 @@ const SelectorProductos = ({ productos, setProductos, usuario, setUsuario }) => 
             min={1}
             step={1}
             placeholder="Cant."
-            value={cantidad}
-            onChange={(e) => setCantidad(e.target.value)}
+            value={cantidad || ""}
+            onChange={handleInputCantidad}
             className="w-full sm:w-20 bg-gray-100 rounded-xl px-4 py-3 text-sm text-gray-800 border-0 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

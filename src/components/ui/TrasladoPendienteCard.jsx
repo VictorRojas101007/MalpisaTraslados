@@ -20,6 +20,21 @@ function TrasladoPendienteCard({ traslado, usuario }) {
       alert("No se pudo eliminar el traslado");
     }
   };
+  const handleConfirmar = async (id, usuario) => {
+    const confirmar = window.confirm("Estas seguro de confirmar este traslado?");
+    if (!confirmar) return;
+
+    try{
+      await confirmarTraslado(id, usuario);
+      alert("Traslado confirmado");
+    } catch (error){
+      console.error("Error al confirmar traslado:", error);
+      alert("No se pudo confirmar el traslado");
+    }finally{
+      alert("Traslado confirmado");
+    }
+
+  }
 
   const iniciarEdicion = (producto, index) => {
     setIndiceEditando(index),
@@ -175,7 +190,7 @@ function TrasladoPendienteCard({ traslado, usuario }) {
 
     <button
       type="submit"
-      onClick={() => confirmarTraslado(traslado.id, usuario)}
+      onClick={() => handleConfirmar(traslado.id, usuario)}
       className="w-full rounded-3xl bg-blue-600 px-6 py-4 text-sm font-bold text-white transition hover:bg-blue-700 sm:w-auto animate-[float-button_2.5s_ease-in-out_infinite]"
     >
       Confirmar Recepción
